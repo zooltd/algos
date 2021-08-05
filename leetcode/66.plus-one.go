@@ -1,4 +1,4 @@
-package mian
+package main
 
 /*
  * @lc app=leetcode id=66 lang=golang
