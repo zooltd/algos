@@ -20,10 +20,7 @@ func corpFlightBookings(bookings [][]int, n int) []int {
 	for i := 1; i <= n; i++ {
 		a[i] = a[i-1] + delta[i]
 	}
-	for i := 1; i <= n; i++ {
-		a[i-1] = a[i]
-	}
-	return a[:len(a)-1]
+	return a[1:]
 }
 
 // @lc code=end
