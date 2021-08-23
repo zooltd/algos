@@ -10,26 +10,22 @@ using namespace std;
 class Solution {
 public:
   int largestRectangleArea(vector<int> &heights) {
-    heights.push_back(0);
-    stack<Rect> s;
+    stack<int> s;
     int ans = 0;
-    for (int h : heights) {
-      int accumulated_width = 0;
-      while (!s.empty() && s.top().height >= h) {
-        accumulated_width += s.top().width;
-        ans = max(ans, accumulated_width * s.top().height);
+    heights.insert(heights.begin(), 0);
+    heights.push_back(0);
+    for (int i = 0; i < heights.size(); i++) {
+      while (!s.empty() && heights[s.top()] > heights[i]) {
+        int cur = s.top();
         s.pop();
+        int left = s.top() + 1;
+        int right = i - 1;
+        ans = max(ans, (right - left + 1) * heights[cur]);
       }
-      s.push({h, accumulated_width + 1});
+      s.push(i);
     }
     return ans;
   }
-
-private:
-  struct Rect {
-    int height;
-    int width;
-  };
 };
 
 // @lc code=end
