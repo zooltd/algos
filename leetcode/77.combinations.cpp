@@ -10,27 +10,27 @@ using namespace std;
 class Solution {
 public:
   vector<vector<int>> combine(int n, int k) {
-    doCombinations(1, n, k);
     this->n = n;
     this->k = k;
+    doCombinations(1);
     return ans;
   }
 
-  void doCombinations(int index, int n, int k) {
+  void doCombinations(int index) {
+    if (s.size() > k || s.size() + n - index + 1 < k)
+      return;
+
     if (index > n) {
-      if (s.size() == k) {
-        ans.push_back(s);
-        return;
-      }
+      ans.push_back(s);
       return;
     }
 
     // no
-    doCombinations(index + 1, n, k);
+    doCombinations(index + 1);
 
     // yes
     s.push_back(index);
-    doCombinations(index + 1, n, k);
+    doCombinations(index + 1);
     s.pop_back();
   }
 
