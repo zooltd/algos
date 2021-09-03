@@ -13,6 +13,7 @@ public:
     sort(nums.begin(), nums.end());
     visited = new bool[nums.size()]{0};
     doPermuteUnique(nums, 0);
+    delete[] visited;
     return ans;
   }
 

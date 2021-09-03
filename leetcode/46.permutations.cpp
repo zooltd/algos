@@ -12,6 +12,7 @@ public:
   vector<vector<int>> permute(vector<int> &nums) {
     visited = new bool[nums.size()]{0};
     doPermute(nums, 0);
+    delete[] visited;
     return ans;
   }
 
