@@ -21,19 +21,21 @@ public:
   }
 
 private:
+  /* x->y */
   void addEdge(int x, int y) {
     edge[x].push_back(y);
     inDeg[y]++;
   }
 
-  /**/
   bool topsort() {
     queue<int> q;
-    for (size_t i = 0; i < n; i++) {
+    /* start from vertices with 0 indegree */
+    for (int i = 0; i < n; i++) {
       if (inDeg[i] == 0)
         q.push(i);
     }
     int classes = 0;
+    /* BFS */
     while (!q.empty()) {
       int x = q.front();
       q.pop();
