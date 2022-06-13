@@ -9,26 +9,27 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-  vector<vector<int>> subsets(vector<int> &nums) {
-    findSubsets(nums, 0);
-    return ans;
-  }
-
-  void findSubsets(vector<int> &nums, int index) {
-    if (index == nums.size()) {
-      ans.push_back(s);
-      return;
+    vector<vector<int>> subsets(vector<int>& nums) {
+        dfs(nums, 0);
+        return res;
     }
-
-    findSubsets(nums, index + 1);
-
-    s.push_back(nums[index]);
-    findSubsets(nums, index + 1);
-    s.pop_back();
-  }
-
+    
 private:
-  vector<vector<int>> ans;
-  vector<int> s;
+    void dfs(vector<int>& nums, int i) {
+        if (i == nums.size()) {
+            res.push_back(path);
+            return;
+        }
+        
+        path.push_back(nums[i]);
+        dfs(nums, i + 1);
+
+        path.pop_back();
+        dfs(nums, i + 1);
+    }
+    
+private:
+    vector<vector<int>> res;
+    vector<int> path;
 };
 // @lc code=end
