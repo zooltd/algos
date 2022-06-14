@@ -10,6 +10,24 @@ using namespace std;
 class Solution {
 public:
   vector<vector<int>> merge(vector<vector<int>> &intervals) {
+    if (intervals.empty()) return {};
+    vector<vector<int>> res;
+    sort(intervals.begin(), intervals.end());
+    int l = intervals[0][0], r = intervals[0][1];
+    for (int i = 1; i < intervals.size(); i++) {
+      if (intervals[i][0] <= r)
+        r = max(r, intervals[i][1]);
+      else {
+        res.push_back({l, r});
+        l = intervals[i][0], r = intervals[i][1];
+      }
+    }
+
+    res.push_back({l, r});
+    return res;
+  }
+  
+  vector<vector<int>> merge_2(vector<vector<int>> &intervals) {
     /* diff */
     vector<pair<int, int>> events;
     for (vector<int> &vec : intervals) {
