@@ -8,35 +8,19 @@
 class Solution {
 public:
     string addBinary(string a, string b) {
-        string res;
-        int carry = 0;
-        int i = a.size() - 1, j = b.size() - 1;
-        for (; i >= 0 && j >= 0; i--, j--) {
-            int ai = ctoi(a[i]);
-            int bj = ctoi(b[j]);
-            int num = (ai + bj + carry) % 2;
-            carry = (ai + bj + carry) / 2;
-            res.insert(0, to_string(num));
-        }
-        while (i >= 0) {
-            int ai = ctoi(a[i--]);
-            int num = (ai + carry) % 2;
-            carry = (ai + carry) / 2;
-            res.insert(0, to_string(num));
+        reverse(a.begin(), a.end());
+        reverse(b.begin(), b.end());
+
+        string c;
+        for (int i = 0, t = 0; i < a.size() || i < b.size() || t; i ++ ) {
+            if (i < a.size()) t += a[i] - '0';
+            if (i < b.size()) t += b[i] - '0';
+            c += to_string(t % 2);
+            t /= 2;
         }
 
-        while (j >= 0) {
-            int bj = ctoi(b[j--]);
-            int num = (bj + carry) % 2;
-            carry = (bj + carry) / 2;
-            res.insert(0, to_string(num));
-        }
-        if (carry) res.insert(0, "1");
-        return res;
-    }
-private:
-    int ctoi(char c) {
-        return c == '1'? 1 : 0;
+        reverse(c.begin(), c.end());
+        return c;
     }
 };
 // @lc code=end
