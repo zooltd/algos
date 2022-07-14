@@ -10,23 +10,16 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-  bool canPartition(vector<int> &nums) {
-    int n = nums.size();
-    nums.insert(nums.begin(), 0);
+    bool canPartition(vector<int> &nums) {
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if (sum & 1) return false;
+        int target = sum / 2;
 
-    int sum = accumulate(nums.begin(), nums.end(), 0);
-    if (sum % 2 == 1)
-      return false;
-    sum /= 2;
-
-    vector<bool> f(sum + 1, false);
-    f[0] = true;
-
-    for (int i = 1; i <= n; i++)
-      for (int j = sum; j >= nums[i]; j--)
-        f[j] = f[j] | f[j - nums[i]];
-
-    return f[sum];
-  }
+        vector<int> f(target + 1, 0);
+        for (int i = 0; i < nums.size(); i++)
+            for (int j = target; j >= nums[i]; j--)
+                f[j] = max(f[j], f[j - nums[i]] + nums[i]);
+        return f[target] == target; 
+    }
 };
 // @lc code=end
