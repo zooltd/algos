@@ -21,11 +21,9 @@ public:
     TreeNode* sortedArrayToBST(vector<int>& nums) {
         return build(nums, 0, nums.size() - 1);
     }
-
 private:
     TreeNode* build(vector<int>& nums, int l, int r) {
         if (l > r) return nullptr;
-        if (l == r) return new TreeNode(nums[l]);
         int mid = (l + r + 1) >> 1;
         TreeNode* root = new TreeNode(nums[mid]);
         root->left = build(nums, l, mid - 1);
