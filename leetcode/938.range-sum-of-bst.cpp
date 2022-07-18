@@ -19,21 +19,13 @@
 class Solution {
 public:
     int rangeSumBST(TreeNode* root, int low, int high) {
-        ans = 0;
-        inorder(root, low, high);
-        return ans;
+        if (!root) return 0;
+        int val = root->val;
+        if (val >= low && val <= high)
+            return val + rangeSumBST(root->left, low, high) + rangeSumBST(root->right, low, high);
+        else if (val < low) return rangeSumBST(root->right, low, high);
+        else return rangeSumBST(root->left, low, high);
     }
-
-    void inorder(TreeNode* root, int low, int high) {
-        if (!root) return;
-        inorder(root->left, low, high);
-        int value = root->val;
-        if (low <= value && value <= high)
-            ans += value;
-        inorder(root->right, low, high);
-    }
-private:
-    int ans;
 };
 // @lc code=end
 
