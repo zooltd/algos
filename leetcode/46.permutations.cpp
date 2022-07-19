@@ -10,33 +10,28 @@ using namespace std;
 class Solution {
 public:
   vector<vector<int>> permute(vector<int> &nums) {
-    visited = new bool[nums.size()]{0};
-    doPermute(nums, 0);
-    delete[] visited;
-    return ans;
+    vector<bool> visited(nums.size(), false);
+    dfs(nums, visited);
+    return res;
   }
 
-  void doPermute(vector<int> &nums, int index) {
-    if (index == nums.size()) {
-      ans.push_back(s);
+  void dfs(vector<int> &nums, vector<bool>& visited) {
+    if (path.size() == nums.size()) {
+      res.push_back(path);
       return;
     }
-
-    // choose which num to place
     for (int i = 0; i < nums.size(); i++) {
-      if (visited[i])
-        continue;
+      if (visited[i]) continue;
       visited[i] = true;
-      s.push_back(nums[i]);
-      doPermute(nums, index + 1);
-      s.pop_back();
+      path.push_back(nums[i]);
+      dfs(nums, visited);
+      path.pop_back();
       visited[i] = false;
     }
   }
 
 private:
-  vector<vector<int>> ans;
-  vector<int> s;
-  bool *visited;
+  vector<vector<int>> res;
+  vector<int> path;
 };
 // @lc code=end
