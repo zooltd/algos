@@ -12,30 +12,24 @@ public:
         return res;
     }
 
-private:
-    void dfs(string& s, int u) {
-        if (u == s.size()) {
+    void dfs(string &s, int st) {
+        if (st == s.size()) {
             res.push_back(path);
             return;
-        } 
-
-        for (int i = u; i < s.size(); i++) {
-            string str = s.substr(u, i - u + 1);
-            if (isPalindrome(str)) {
-                path.push_back(str);
-                dfs(s, i + 1);
-                path.pop_back();
-            }
+        }
+        for (int ed = st; ed < s.size(); ed++) {
+            string str = s.substr(st, ed - st + 1);
+            if (!isPalindrome(str)) continue;
+            path.push_back(str);
+            dfs(s, ed + 1);
+            path.pop_back();
         }
     }
 
-    bool isPalindrome(string& s) {
-        int i = 0, j = s.size() - 1;
-        while (i < j && s[i] == s[j]) {
-            i++;
-            j--;
-        }
-        return i >= j;
+    bool isPalindrome(string& str) {
+        for (int l = 0, r = str.size() - 1; l <= r; l++, r--)
+            if (str[l] != str[r]) return false;
+        return true;
     }
 
 private:

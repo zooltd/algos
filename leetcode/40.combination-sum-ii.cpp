@@ -13,8 +13,7 @@ public:
         dfs(candidates, target, 0);
         return res;
     }
-    
-private:
+
     void dfs(vector<int>& candidates, int target, int st) {
         if (target == 0) {
             res.push_back(path);
@@ -22,13 +21,13 @@ private:
         }
 
         for (int i = st; i < candidates.size(); i++) {
-            if (candidates[i] > target) return;
             if (i > st && candidates[i] == candidates[i - 1]) continue;
+            if (target < candidates[i]) break;
             path.push_back(candidates[i]);
             dfs(candidates, target - candidates[i], i + 1);
             path.pop_back();
         }
-   }
+    }
 
 private:
     vector<vector<int>> res;

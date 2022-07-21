@@ -12,27 +12,21 @@ public:
         return res;
     }
 
-    /**
-     * @param u current index
-     * @param k path size
-     */
-    void dfs(string &s, int u, int k, string path) {
-        if (u == s.size()) {
-            if (k == 4) {
-                path.pop_back();
-                res.push_back(path);
-            }
+    void dfs(const string& s, int st, int cnt, string path) {
+        if (st == s.size()) {
+            if (cnt == 4) path.pop_back(), res.push_back(path);
             return;
         }
 
-        if (k >= 4) return;
+        if (cnt >= 4) return;
 
-        for (int i = u, value = 0; i < s.size(); i++) {
-            // check leading zeros
-            if (i > u && s[u] == '0') break;
-            value = value * 10 + s[i] - '0';
-            if (value <= 255) dfs(s, i + 1, k + 1, path + to_string(value) + ".");
-            else break;
+        for (int i = st, val = 0; i < s.size(); i++) {
+            // skip leading zeros
+            if (i > st && s[st] == '0') break;
+            val = val * 10 + s[i] - '0';
+            if (val > 255) break;
+            // str = s[st, i]
+            dfs(s, i + 1, cnt + 1, path + to_string(val) + ".");
         }
     }
 
