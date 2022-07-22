@@ -13,19 +13,14 @@ public:
         return res;
     }
 
-    void dfs(vector<int>& nums, int u) {
-        if (u == nums.size()) {
-            res.push_back(path);
-            return;
-        }
-        int k = u + 1;
-        while(k < nums.size() && nums[k] == nums[u]) k++;
-        dfs(nums, k);
-        for (int i = u; i < k; i++) {
+    void dfs(vector<int>& nums, int st) {
+        res.push_back(path);
+        for (int i = st; i < nums.size(); i++) {
+            if (i > st && nums[i] == nums[i - 1]) continue;
             path.push_back(nums[i]);
-            dfs(nums, k);
+            dfs(nums, i + 1);
+            path.pop_back();
         }
-        path.erase(path.end() - (k - u), path.end());
     }
 
 private:
