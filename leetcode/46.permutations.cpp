@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 /*
  * @lc app=leetcode id=46 lang=cpp
@@ -10,28 +11,28 @@ using namespace std;
 class Solution {
 public:
   vector<vector<int>> permute(vector<int> &nums) {
-    vector<bool> visited(nums.size(), false);
-    dfs(nums, visited);
+    vector<bool> used(nums.size(), false);
+    dfs(nums, used);
     return res;
   }
 
-  void dfs(vector<int> &nums, vector<bool>& visited) {
+  void dfs(vector<int>& nums, vector<bool>& used) {
     if (path.size() == nums.size()) {
       res.push_back(path);
       return;
     }
+
     for (int i = 0; i < nums.size(); i++) {
-      if (visited[i]) continue;
-      visited[i] = true;
+      if (used[i]) continue;
+      used[i] = true;
       path.push_back(nums[i]);
-      dfs(nums, visited);
+      dfs(nums, used);
+      used[i] = false;
       path.pop_back();
-      visited[i] = false;
     }
   }
-
 private:
-  vector<vector<int>> res;
   vector<int> path;
+  vector<vector<int>> res;
 };
 // @lc code=end

@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 /*
  * @lc app=leetcode id=47 lang=cpp
@@ -7,39 +8,36 @@ using namespace std;
  */
 
 // @lc code=start
+/**
+ * https://www.acwing.com/video/1379/
+ */
 class Solution {
 public:
   vector<vector<int>> permuteUnique(vector<int> &nums) {
     sort(nums.begin(), nums.end());
-    visited = new bool[nums.size()]{0};
-    doPermuteUnique(nums, 0);
-    delete[] visited;
-    return ans;
+    vector<bool> used(nums.size(), false);
+    dfs(nums, used);
+    return res;
   }
 
-  void doPermuteUnique(vector<int> &nums, int index) {
-    if (index == nums.size()) {
-      ans.push_back(s);
+  void dfs(vector<int>& nums, vector<bool>& used) {
+    if (path.size() == nums.size()) {
+      res.push_back(path);
       return;
     }
 
-    // choose which num to place
     for (int i = 0; i < nums.size(); i++) {
-      if (visited[i])
-        continue;
-      if (i > 0 && nums[i] == nums[i - 1] && !visited[i - 1])
-        continue;
-      visited[i] = true;
-      s.push_back(nums[i]);
-      doPermuteUnique(nums, index + 1);
-      s.pop_back();
-      visited[i] = false;
+      if (used[i]) continue;
+      if (i >= 1 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+      used[i] = true;
+      path.push_back(nums[i]);
+      dfs(nums, used);
+      used[i] = false;
+      path.pop_back();
     }
   }
-
 private:
-  vector<vector<int>> ans;
-  vector<int> s;
-  bool *visited;
+  vector<int> path;
+  vector<vector<int>> res;
 };
 // @lc code=end
