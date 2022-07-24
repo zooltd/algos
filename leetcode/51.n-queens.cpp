@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <vector>
 using namespace std;
 /*
  * @lc app=leetcode id=51 lang=cpp
@@ -9,52 +10,34 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-  vector<vector<string>> solveNQueens(int n) {
-    this->n = n;
-    col_used = vector<bool>(n, false);
-    dfs(0);
-
-    vector<vector<string>> result;
-    for (vector<int> &per : ans) {
-      vector<string> res;
-      for (int row = 0; row < n; row++) {
-        string s(n, '.');
-        int col = per[row];
-        s[col] = 'Q';
-        res.push_back(s);
-      }
-      result.push_back(res);
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> board(n, string (n, '.'));
+        vector<bool> col_used(n, false);
+        vector<bool> dg_used(2 * n - 1, false);
+        vector<bool> udg_used(2 * n - 1, false);
+        dfs(board, n, 0, col_used, dg_used, udg_used);
+        return res;
     }
-    return result;
-  }
+
+    void dfs(vector<string>& board, int n, int row, vector<bool>& col_used,
+            vector<bool>& dg_used, vector<bool>& udg_used) {
+        if (row == n) {
+            res.push_back(board);
+            return;
+        }
+        
+        for (int col = 0; col < n; col++) {
+            if (col_used[col] || dg_used[col + row] || udg_used[col - row + n - 1]) continue;
+            col_used[col] = dg_used[col + row] = udg_used[col - row + n - 1] = true;
+            board[row][col] = 'Q';
+            dfs(board, n, row + 1, col_used, dg_used, udg_used);
+            col_used[col] = dg_used[col + row] = udg_used[col - row + n - 1] = false;
+            board[row][col] = '.';
+        }
+    }
 
 private:
-  int n;
-  vector<int> s;
-  vector<vector<int>> ans;
-  vector<bool> col_used;
-  unordered_map<int, bool> diag_upright_to_downleft_used;
-  unordered_map<int, bool> diag_upleft_to_downright_used;
-
-  void dfs(int row) {
-    if (row == n) {
-      ans.push_back(s);
-      return;
-    }
-    for (int col = 0; col < n; col++)
-      /* is valid: 1) check col 2) check diag / 3) check diag \ */
-      if (!col_used[col] && !diag_upright_to_downleft_used[row + col] &&
-          !diag_upleft_to_downright_used[row - col]) {
-        col_used[col] = true;
-        diag_upright_to_downleft_used[row + col] = true;
-        diag_upleft_to_downright_used[row - col] = true;
-        s.push_back(col);
-        dfs(row + 1);
-        s.pop_back();
-        diag_upleft_to_downright_used[row - col] = false;
-        diag_upright_to_downleft_used[row + col] = false;
-        col_used[col] = false;
-      }
-  }
+    vector<vector<string>> res;
 };
 // @lc code=end
+
