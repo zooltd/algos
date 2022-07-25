@@ -37,7 +37,7 @@ public:
 
     /**
     * @brief check for validation of parentheses pairs
-    * @remark Rule-1: in any prefix of string, # of ( > # of )
+    * @remark Rule-1: in any prefix of string, # of ( >= # of )
     * @remark Rule-2: in the end, # of ( == # of )
     */
     bool valid(const string& s) {
