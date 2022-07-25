@@ -10,8 +10,8 @@ using namespace std;
 class Solution {
 public:
   int numIslands(vector<vector<char>> &grid) {
-    this->m = grid.size();
-    this->n = grid[0].size();
+    m = grid.size();
+    n = grid[0].size();
     int ans = 0;
     for (int i = 0; i < m; i++)
       for (int j = 0; j < n; j++)
