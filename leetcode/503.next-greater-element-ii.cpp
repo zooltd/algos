@@ -12,14 +12,10 @@ public:
         nums.insert(nums.end(), nums.begin(), nums.end());
         stack<int> stk;
         vector<int> res(n);
-        for (int i = n * 2 - 1; i >= 0; i--) {
-            int x = nums[i];
-            while (stk.size() && x >= stk.top()) stk.pop();
-            if (i < n) {
-                if (stk.empty()) res[i] = -1;
-                else res[i] = stk.top();
-            }
-            stk.push(x);
+        for (int i = 2 * n - 1; i >= 0; i--) {
+            while (stk.size() && stk.top() <= nums[i]) stk.pop();
+            if (i < n) res[i] = stk.empty() ? -1 : stk.top();
+            stk.push(nums[i]);
         }
         return res;
     }

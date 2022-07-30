@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <stack>
 using namespace std;
 /*
  * @lc app=leetcode id=84 lang=cpp
@@ -10,18 +11,19 @@ using namespace std;
 class Solution {
 public:
     int largestRectangleArea(vector<int> &heights) {
-      stack<int> st;
-      int res = 0;
       heights.insert(heights.begin(), 0);
       heights.push_back(0);
-
+      stack<int> stk;
+      int res = 0;
       for (int i = 0; i < heights.size(); i++) {
-        while (st.size() && heights[st.top()] > heights[i]) {
-          int curr = st.top();
-          st.pop();
-          res = max(res, heights[curr] * (i - st.top() - 1));
+        while (stk.size() && heights[stk.top()] > heights[i]) {
+          int mid = stk.top();
+          stk.pop();
+          int l = stk.top();
+          int r = i;
+          res = max(res, heights[mid] * (r - l - 1));
         }
-        st.push(i);
+        stk.push(i);
       }
       return res;
     }
