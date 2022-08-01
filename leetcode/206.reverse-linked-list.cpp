@@ -18,14 +18,6 @@
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if (!head || !head->next) return head;
-        ListNode *tail = reverseList(head->next);
-        head->next->next = head;
-        head->next = nullptr;
-        return tail;
-    }
-
-    ListNode* reverseList2(ListNode* head) {
         ListNode* prev = nullptr;
         ListNode* curr = head;
         while (curr) {
@@ -35,6 +27,18 @@ public:
             curr = tmp;
         }
         return prev;
+    }
+};
+
+class Solution2 {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if (!head) return nullptr;
+        if (!head->next) return head;
+        auto tail = reverseList(head->next);
+        head->next->next = head;
+        head->next = nullptr;
+        return tail;
     }
 };
 // @lc code=end
