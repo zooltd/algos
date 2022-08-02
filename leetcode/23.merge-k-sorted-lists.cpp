@@ -1,14 +1,14 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <queue>
 using namespace std;
 
 struct ListNode {
-  int val;
-  ListNode *next;
-  ListNode() : val(0), next(nullptr) {}
-  ListNode(int x) : val(x), next(nullptr) {}
-  ListNode(int x, ListNode *next) : val(x), next(next) {}
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
-
 /*
  * @lc app=leetcode id=23 lang=cpp
  *
@@ -27,6 +27,29 @@ struct ListNode {
  * };
  */
 class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        auto cmp = [](const ListNode* lhs, const ListNode* rhs) {
+            return lhs->val > rhs->val;
+        };
+        priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> pq(cmp);
+        for (ListNode* node : lists)
+            if (node) pq.push(node);
+        ListNode* dummy = new ListNode();
+        ListNode* curr = dummy;
+        while (pq.size()) {
+            auto t = pq.top();
+            pq.pop();
+            curr->next = t;
+            curr = t;
+            if (t->next) pq.push(t->next);
+        }
+        curr->next = nullptr;
+        return dummy->next;
+    }
+};
+
+class Solution2 {
 public:
   ListNode *mergeKLists(vector<ListNode *> &lists) {
     return mergeSort(lists, 0, lists.size() - 1);
@@ -54,3 +77,4 @@ public:
   }
 };
 // @lc code=end
+
