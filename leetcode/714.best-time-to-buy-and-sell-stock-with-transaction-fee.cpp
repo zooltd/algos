@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * @lc app=leetcode id=714 lang=cpp
  *
@@ -7,23 +9,17 @@
 // @lc code=start
 class Solution {
 public:
-  int maxProfit(vector<int> &prices, int fee) {
-    int n = prices.size();
-    prices.insert(prices.begin(), 0);
-
-    vector<vector<int>> f(n + 1, vector<int>(2, -1e5));
-    f[0][0] = 0;
-
-    for (int i = 0; i < n; i++)
-      for (int j = 0; j <= 1; j++) {
-        if (j == 0)
-          f[i + 1][1] = max(f[i + 1][1], f[i][j] - prices[i + 1] - fee);
-        if (j == 1)
-          f[i + 1][0] = max(f[i + 1][0], f[i][j] + prices[i + 1]);
-        f[i + 1][j] = max(f[i + 1][j], f[i][j]);
-      }
-
-    return f[n][0];
-  }
+    int maxProfit(vector<int>& prices, int fee) {
+        int n = prices.size();
+        vector<vector<int>> f(n, vector<int>(2, -0x3f3f3f3f));
+        f[0][0] = 0;
+        f[0][1] = -prices[0];
+        for (int i = 1; i < n; i++) {
+            f[i][0] = max(f[i - 1][0], f[i - 1][1] + prices[i] - fee);
+            f[i][1] = max(f[i - 1][1], f[i - 1][0] - prices[i]);
+        }
+        return f[n - 1][0];
+    }
 };
 // @lc code=end
+
