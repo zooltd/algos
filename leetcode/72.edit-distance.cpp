@@ -47,4 +47,4 @@ public:
 // @lc code=end
 
 // also see: https://www.acwing.com/video/1415/,
-// split the sey by **last operation**
+// split the set by **last operation**
