@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <vector>
 using namespace std;
 /*
  * @lc app=leetcode id=17 lang=cpp
@@ -9,43 +10,37 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-  vector<string> letterCombinations(string digits) {
-    if (digits == "")
-      return {};
-    input = digits;
-    string output = "";
-    dfs(output);
-    return res;
-  }
+    vector<string> letterCombinations(string digits) {
+        if (digits == "") return {};
+        dfs(digits, "", 0);
+        return res;
+    }
 
 private:
-  void dfs(string &output) {
-    int n = output.size();
-    if (n == input.size()) {
-      res.push_back(output);
-      return;
+    void dfs(string &digits, string path, int st) {
+        if (st == digits.size()) {
+            res.push_back(path);
+            return;
+        }
+        for (const string s: index[digits[st] - '0']) {
+            path += s;
+            dfs(digits, path, st + 1);
+            path.pop_back();
+        }
     }
-    char ch = input[n];
-    assert(ch >= '2' && ch <= '9');
-    for (const char candidate : vec[ch - '0']) {
-      output += candidate;
-      dfs(output);
-      output.pop_back();
-    }
-  }
 
 private:
-  string input;
-  vector<vector<char>> vec = {{},
-                              {},
-                              {'a', 'b', 'c'},
-                              {'d', 'e', 'f'},
-                              {'g', 'h', 'i'},
-                              {'j', 'k', 'l'},
-                              {'m', 'n', 'o'},
-                              {'p', 'q', 'r', 's'},
-                              {'t', 'u', 'v'},
-                              {'w', 'x', 'y', 'z'}};
-  vector<string> res;
+    vector<string> res;
+    vector<vector<string>> index = {
+            {},
+            {},
+            {"a", "b", "c"},
+            {"d", "e", "f"},
+            {"g", "h", "i"},
+            {"j", "k", "l"},
+            {"m", "n", "o"},
+            {"p", "q", "r", "s"},
+            {"t", "u", "v"},
+            {"w", "x", "y", "z"}};
 };
 // @lc code=end

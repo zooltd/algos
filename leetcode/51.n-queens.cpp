@@ -11,32 +11,34 @@ using namespace std;
 class Solution {
 public:
     vector<vector<string>> solveNQueens(int n) {
-        vector<string> board(n, string (n, '.'));
-        vector<bool> col_used(n, false);
-        vector<bool> dg_used(2 * n - 1, false);
-        vector<bool> udg_used(2 * n - 1, false);
-        dfs(board, n, 0, col_used, dg_used, udg_used);
+        cols = vector<bool>(n, false);
+        diags = vector<bool>(2 * n - 1, false);
+        udiags = vector<bool>(2 * n - 1, false);
+        vector<string> board(n, string(n, '.'));
+        dfs(board, n, 0);
         return res;
     }
-
-    void dfs(vector<string>& board, int n, int row, vector<bool>& col_used,
-            vector<bool>& dg_used, vector<bool>& udg_used) {
+    
+    void dfs(vector<string>& board, int n, int row) {
         if (row == n) {
             res.push_back(board);
             return;
         }
         
         for (int col = 0; col < n; col++) {
-            if (col_used[col] || dg_used[col + row] || udg_used[col - row + n - 1]) continue;
-            col_used[col] = dg_used[col + row] = udg_used[col - row + n - 1] = true;
+            if (cols[col] || diags[row + col] || udiags[row - col + n - 1]) continue;
+            
+            cols[col] = diags[row + col] = udiags[row - col + n - 1] = true; 
+
             board[row][col] = 'Q';
-            dfs(board, n, row + 1, col_used, dg_used, udg_used);
-            col_used[col] = dg_used[col + row] = udg_used[col - row + n - 1] = false;
+            dfs(board, n, row + 1);
             board[row][col] = '.';
+
+            cols[col] = diags[row + col] = udiags[row - col + n - 1] = false; 
         }
     }
-
 private:
+    vector<bool> cols, diags, udiags;
     vector<vector<string>> res;
 };
 // @lc code=end
