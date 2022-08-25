@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * @lc app=leetcode id=169 lang=cpp
  *
