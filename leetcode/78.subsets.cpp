@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 /*
  * @lc app=leetcode id=78 lang=cpp
@@ -25,7 +25,7 @@ private:
     }
     
 private:
-    vector<vector<int>> res;
     vector<int> path;
+    vector<vector<int>> res;
 };
 // @lc code=end

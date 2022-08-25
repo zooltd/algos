@@ -1,3 +1,13 @@
+#include <unordered_map>
+#include <unordered_set>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
 /*
  * @lc app=leetcode id=236 lang=cpp
  *
@@ -16,54 +26,70 @@
  */
 class Solution {
 public:
-    TreeNode* res = nullptr;
-
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
         dfs(root, p, q);
-        return res;
+        return lcs;
     }
 
-    int dfs(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if (!root) return 0;
-        int state = dfs(root->left, p, q);
-        if (root == p) state |= 0x1;
-        else if (root == q) state |= 0x10;
+    int dfs(TreeNode *root, TreeNode *p, TreeNode *q) {
+        if (!root) return 0b00;
+        int state = 0b00;
+        if (root == p) state |= 0b1;
+        else if (root == q) state |= 0b10;
+        state |= dfs(root->left, p, q);
         state |= dfs(root->right, p, q);
-        if (state == 0x11 && !res) res = root;
+        if (state == 0b11 && !lcs) lcs = root;
         return state;
     }
 
-    /**
-    * @brief https://www.acwing.com/activity/content/code/content/1404142/
-    */
-    TreeNode *lowestCommonAncestor2(TreeNode *root, TreeNode *p, TreeNode *q) {
-        helper(root);
-        // tracing back from p to root
-        while (p->val != root->val) {
-            path.insert(p->val);
-            p = father[p->val];
-        }
-        path.insert(root->val);
-        
-        while (path.find(q->val) == path.end())
-            q = father[q->val];
-        return q;
+private:
+    TreeNode *lcs = nullptr;
+};
+
+// @lc code=end
+
+// https://www.acwing.com/activity/content/code/content/1404142/
+class Solution2 {
+public:
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+        dfs(root, nullptr);
+
+        unordered_set<TreeNode *> parents_p;
+        for (auto *node = p; node; node = parents[node])
+            parents_p.insert(node);
+        for (auto *node = q; node; node = parents[node])
+            if (parents_p.count(node)) return node;
+        return nullptr;
+    }
+
+    void dfs(TreeNode *root, TreeNode *parent) {
+        if (!root) return;
+        parents[root] = parent;
+        dfs(root->left, root);
+        dfs(root->right, root);
     }
 
 private:
-    void helper(TreeNode *root) {
-        if (!root) return;
-        if (root->left) {
-            father[root->left->val] = root;
-            helper(root->left);
-        }
-        if (root->right) {
-            father[root->right->val] = root;
-            helper(root->right);
-        }
-    }
-    unordered_map<int, TreeNode *> father;
-    // path to p from root
-    unordered_set<int> path;
+    unordered_map<TreeNode *, TreeNode *> parents;
 };
-// @lc code=end
+
+class Solution3 {
+public:
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+        if (!root) return root;
+
+        // If p or q if found, return the root.
+        if (root == p || root == q) return root;
+
+        // Save the root found at left and right recursively
+        TreeNode *left = lowestCommonAncestor(root->left, p, q);
+        TreeNode *right = lowestCommonAncestor(root->right, p, q);
+
+        // If both the nodes are found, return parent of that node. That will be root.
+        if (left && right) return root;
+        // If left is found, and right is not found.
+        // It is given that both the p and q will exist for sure.
+        // If left present then right will be a decendent of left, or vice versa.
+        return left ? left : right;
+    }
+};

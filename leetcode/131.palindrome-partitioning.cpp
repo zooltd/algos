@@ -1,3 +1,6 @@
+#include <string>
+#include <vector>
+using namespace std;
 /*
  * @lc app=leetcode id=131 lang=cpp
  *
@@ -11,30 +14,36 @@ public:
         dfs(s, 0);
         return res;
     }
-
-    void dfs(string &s, int st) {
+    
+    void dfs(string& s, int st) {
         if (st == s.size()) {
             res.push_back(path);
             return;
         }
-        for (int ed = st; ed < s.size(); ed++) {
-            string str = s.substr(st, ed - st + 1);
-            if (!isPalindrome(str)) continue;
-            path.push_back(str);
-            dfs(s, ed + 1);
+        
+        for (int i = st; i < s.size(); i++) {
+            // cut after i
+            string substr = s.substr(st, i - st + 1);
+
+            if (!isPalindrome(substr)) continue;
+            
+            path.push_back(substr);
+            dfs(s, i + 1);
             path.pop_back();
         }
     }
-
-    bool isPalindrome(string& str) {
-        for (int l = 0, r = str.size() - 1; l <= r; l++, r--)
-            if (str[l] != str[r]) return false;
-        return true;
+    
+    bool isPalindrome(string& s) {
+        int l = 0, r = s.size() - 1;
+        while (l <= r && s[l] == s[r]) {
+            l++, r--;
+        }
+        return l > r;
     }
-
+    
 private:
-    vector<vector<string>> res;
     vector<string> path;
+    vector<vector<string>> res;
 };
 // @lc code=end
 
