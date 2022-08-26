@@ -34,7 +34,7 @@ public:
     int dfs(TreeNode *root, TreeNode *p, TreeNode *q) {
         if (!root) return 0b00;
         int state = 0b00;
-        if (root == p) state |= 0b1;
+        if (root == p) state |= 0b01;
         else if (root == q) state |= 0b10;
         state |= dfs(root->left, p, q);
         state |= dfs(root->right, p, q);

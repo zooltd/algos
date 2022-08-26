@@ -12,37 +12,32 @@ using namespace std;
 class Solution {
 public:
     bool exist(vector<vector<char>>& board, string word) {
-        m = board.size();
-        n = board[0].size();
-        this->word = word;
-
+        m = board.size(), n = board[0].size();
         for (int i = 0; i < m; i++)
             for (int j = 0; j < n; j++)
-                if (dfs(board, i, j, 0)) return true;
+                if (dfs(board, word, i, j, 0)) return true;
         return false;
     }
-
-    bool dfs(vector<vector<char>> &board, int x, int y, int i) {
-        if (board[x][y] != word[i]) return false;
-        if (i == word.size() - 1) return true;
-        char t = board[x][y];
-        board[x][y] = '.';
-
-        for (int d = 0; d < 4; d++) {
-            int a = x + dx[d], b = y + dy[d];
-            if (a < 0 || a >= m || b < 0 || b >= n || board[a][b] == '.') continue;
-            if (dfs(board, a, b, i + 1)) return true;
-        }
-        board[x][y] = t;
-        return false;
-    }
-
-private:
-    int m;
-    int n;
-    string word;
     
-    int dx[4] = {-1, 0, 1, 0};
-    int dy[4] = {0, 1, 0, -1};
+    bool dfs(vector<vector<char>>& board, const string& word, int x, int y, int idx) {
+        const static int dx[4] = {-1, 0, 1, 0};
+        const static int dy[4] = {0, 1, 0, -1};
+        
+        if (board[x][y] != word[idx]) return false;
+        if (idx == word.size() - 1) return true;
+        char tmp = board[x][y];
+        board[x][y] = '.';
+        
+        for (int i = 0; i < 4; i++) {
+            int a = x + dx[i], b = y + dy[i];
+            if (a < 0 || a >= m || b < 0 || b >= n || board[a][b] == '.') continue;
+            if (dfs(board, word, a, b, idx + 1)) return true;
+        }
+
+        board[x][y] = tmp;
+        return false;
+    }
+private:
+    int m, n;
 };
 // @lc code=end

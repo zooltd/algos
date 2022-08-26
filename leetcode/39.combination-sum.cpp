@@ -31,8 +31,8 @@ private:
     }
 
 private:
-    vector<vector<int>> res;
     vector<int> path;
+    vector<vector<int>> res;
 };
 // @lc code=end
 
