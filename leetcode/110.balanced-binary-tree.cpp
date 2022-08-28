@@ -1,3 +1,14 @@
+#include <algorithm>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 /*
  * @lc app=leetcode id=110 lang=cpp
  *
@@ -19,20 +30,21 @@
 class Solution {
 public:
     bool isBalanced(TreeNode* root) {
-        res = true;
-        height(root);
-        return res;
+        bool flag = true;
+        dfs(root, flag);
+        return flag;
     }
-
-private:
-    int height(TreeNode* root) {
+    
+    int dfs(TreeNode* root, bool& flag) {
         if (!root) return 0;
-        int lh = height(root->left), rh = height(root->right);
-        if (abs(lh - rh) > 1) res = false;
-        return 1 + max(lh, rh);
+        
+        int lh = dfs(root->left, flag);
+        int rh = dfs(root->right, flag);
+        
+        if (abs(lh - rh) > 1) flag = false;
+            
+        return max(lh, rh) + 1;
     }
-private:
-    bool res;
 };
 // @lc code=end
 

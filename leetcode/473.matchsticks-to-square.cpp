@@ -1,3 +1,7 @@
+#include <vector>
+#include <numeric>
+#include <algorithm>
+using namespace std;
 /*
  * @lc app=leetcode id=473 lang=cpp
  *
@@ -7,44 +11,39 @@
 // @lc code=start
 class Solution {
 public:
-    bool makesquare(vector<int>& matchsticks) {
-        nums = matchsticks;
+    bool makesquare(vector<int>& nums) {
         if (nums.size() < 4) return false;
-        visited.resize(nums.size(), false);
         int sum = accumulate(nums.begin(), nums.end(), 0);
         if (sum % 4) return false;
-        int length = sum / 4;
-        sort(nums.begin(), nums.end(), greater<int>());
-        return dfs(0, 0, length, 0);
+        int target = sum / 4;
+        sort(nums.begin(), nums.end(), greater<>());
+        used.resize(nums.size(), false);
+        return dfs(nums, target, 0, 0, 0);
     }
     
-    /**
-     * @param start starting index
-     * @param curr current edge length
-     * @param length target edge length
-     * @param cnt completed edges
-     */
-    bool dfs(int start, int curr, int length, int cnt) {
+    // @curr: curr edge length
+    // @cnt: # of completed edges / index of edge that is currently making up
+    // @st: start index
+    bool dfs(vector<int>& nums, int target, int curr, int cnt, int st) {
         if (cnt == 3) return true;
-        if (curr == length) return dfs(0, 0, length, cnt + 1);
+        if (curr == target) return dfs(nums, target, 0, cnt + 1, 0);
         
-        for (int i = start; i < nums.size(); i++) {
-            if (visited[i]) continue;
-            if (curr + nums[i] <= length) {
-                visited[i] = true;
-                if (dfs(i + 1, curr + nums[i], length, cnt)) return true;
-                visited[i] = false;
-            }
-            // fails => pruning
-            if (curr == 0 || curr + nums[i] == length) return false;
-            while (i + 1 < nums.size() && nums[i + 1] == nums[i]) i++;
-        }
+        for (int i = st; i < nums.size(); i++) {
+            if (used[i]) continue;
+            if (curr + nums[i] > target) continue;
+            used[i] = true;
+            if (dfs(nums, target, curr + nums[i], cnt, i + 1)) return true;
+            used[i] = false;
+            
+            // pruning
+            if (curr == 0 || curr + nums[i] == target) return false;
+            while (i + 1 < nums.size() && nums[i] == nums[i + 1]) i++;
+        };
+        
         return false;
     }
-
 private:
-    vector<int> nums;
-    vector<bool> visited; 
+    vector<bool> used;
 };
 // @lc code=end
 

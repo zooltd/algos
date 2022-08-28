@@ -1,3 +1,13 @@
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Employee {
+public:
+    int id;
+    int importance;
+    vector<int> subordinates;
+};
 /*
  * @lc app=leetcode id=690 lang=cpp
  *

@@ -1,5 +1,7 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <vector>
 using namespace std;
+
 /*
  * @lc app=leetcode id=22 lang=cpp
  *
@@ -9,34 +11,40 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-  vector<string> generateParenthesis(int n) {
-    if (n == 0)
-      return {""};
-    if (mp.find(n) != mp.end())
-      return mp[n];
-
-    // segment:
-    // (a)  b
-    // --  --
-    // k  n-k
-    // Eg:
-    // "((()))" => a: "((()))"" b: ""
-    // "(())()" => a: "(())""   b: "()"
-    // "()()()" => a: "()""     b: "()()"
-    vector<string> res;
-    for (int k = 1; k <= n; k++) {
-      auto res_a = generateParenthesis(k - 1); // a
-      auto res_b = generateParenthesis(n - k); // b
-      for (auto &a : res_a)
-        for (auto &b : res_b)
-          res.push_back("(" + a + ")" + b);
+    vector<string> generateParenthesis(int n) {
+        dfs(n, 0, 0, 0);
+        return res;
     }
-    mp[n] = res;
-    return res;
-  }
+
+    /**
+    * @brief check for validation of parentheses pairs
+    * @remark Rule-1: in any prefix of string, # of ( >= # of )
+    * @remark Rule-2: in the end, # of ( == # of )
+    *
+    * @param idx: put ( or ) on the idx-th slot
+    * @param cnt_l: # of ( 
+    * @param cnt_r: # of )
+    */
+    void dfs(int n, int idx, int cnt_l, int cnt_r) {
+        if (cnt_l < cnt_r) return;
+        
+        if (idx == 2 * n) {
+            if (cnt_l == cnt_r) res.push_back(path);
+            return;
+        }
+
+        path.push_back('(');
+        dfs(n, idx + 1, cnt_l + 1, cnt_r);
+        path.pop_back();
+
+        path.push_back(')');
+        dfs(n, idx + 1, cnt_l, cnt_r + 1);
+        path.pop_back();
+    }
 
 private:
-  // memorize
-  unordered_map<int, vector<string>> mp;
+    string path;
+    vector<string> res;
 };
 // @lc code=end
+

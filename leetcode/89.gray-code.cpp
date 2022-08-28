@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * @lc app=leetcode id=89 lang=cpp
  *
@@ -6,6 +8,25 @@
 
 // @lc code=start
 class Solution {
+public:
+    /*
+    1: 0, 1
+    2: 00, 01,| 11, 10
+    3: 000, 001,| 011, 010,| 110, 111, 101, 100  
+    */
+    vector<int> grayCode(int n) {
+        if (n == 1) return {0, 1};
+        auto left = grayCode(n - 1);
+        int sz = left.size();
+        for (int i = sz - 1; i >= 0; i--) {
+            left.push_back(left[i] | 1 << (n - 1));
+        }
+        return left;
+    }
+};
+// @lc code=end
+
+class Solution2 {
 public:
     vector<int> grayCode(int n) {
         vector<int> res {{0}};
@@ -17,5 +38,3 @@ public:
         return res;
     }
 };
-// @lc code=end
-

@@ -1,3 +1,7 @@
+#include <limits>
+#include <algorithm>
+using namespace std;
+
 struct TreeNode {
     int val;
     TreeNode *left;
@@ -7,9 +11,9 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 /*
- * @lc app=leetcode id=112 lang=cpp
+ * @lc app=leetcode id=124 lang=cpp
  *
- * [112] Path Sum
+ * [124] Binary Tree Maximum Path Sum
  */
 
 // @lc code=start
@@ -26,12 +30,22 @@ struct TreeNode {
  */
 class Solution {
 public:
-    bool hasPathSum(TreeNode* root, int targetSum) {
-        if (!root) return false;
-        targetSum -= root->val;
-        if (!root->left && !root->right) return targetSum == 0;
-        return hasPathSum(root->left, targetSum) || hasPathSum(root->right, targetSum);
+    int maxPathSum(TreeNode* root) {
+        res = INT_MIN;
+        dfs(root);
+        return res;
     }
+
+    int dfs(TreeNode* root) {
+        if (!root) return 0;
+        int left = max(0, dfs(root->left));
+        int right = max(0, dfs(root->right));
+        res = max(res, left + root->val + right);
+        return root->val + max(left, right);
+    }
+    
+private:
+    int res;
 };
 // @lc code=end
 
